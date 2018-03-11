@@ -15,7 +15,8 @@ df = data.frame(
     to = Sys.Date(), 
     by = "day"
   )
-)
+) %>% 
+  mutate(date = date %>% as.character())
 
 ui <- material_page(
   # Setup
@@ -83,7 +84,14 @@ server <- function(input, output, session) {
         rhandsontable(
           data = df,
           rowHeaders = F
-        )
+        ) %>% 
+          #fix column format
+          hot_col(
+            col = "date", 
+            dateFormat = "YYYY-MM-DD", 
+            type = "date"
+          )
+        
       )
       
       output$controls = renderUI({
